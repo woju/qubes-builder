@@ -11,6 +11,7 @@ COMPONENTS ?= vmm-xen \
 			  core-vchan-xen \
 			  linux-utils \
 			  qubes-app-linux-img-converter \
+			  qubes-artwork \
 			  core-admin \
 			  core-admin-linux \
 			  core-agent-linux \
