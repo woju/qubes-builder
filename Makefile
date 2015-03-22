@@ -218,8 +218,8 @@ sign-all:
 	else \
 		echo  "--> NO_SIGN given, skipping package signing!" ;\
 	fi; \
-	for dist in $(shell ls qubes-rpms-mirror-repo/); do \
-		if [ -d qubes-rpms-mirror-repo/$$dist/rpm ]; then \
+	for dist in $(shell ls qubes-packages-mirror-repo/); do \
+		if [ -d qubes-packages-mirror-repo/$$dist/rpm ]; then \
 			sudo ./update-local-repo.sh $$dist; \
 		fi \
 	done
@@ -236,10 +236,10 @@ clean-installer-rpms:
 	(cd $(SRC_DIR)/$(INSTALLER_COMPONENT)/yum || cd $(SRC_DIR)/$(INSTALLER_COMPONENT)/yum && ./clean_repos.sh) || true
 
 clean-rpms:: clean-installer-rpms
-	@for dist in $(shell ls qubes-rpms-mirror-repo/); do \
-		echo "Cleaning up rpms in qubes-rpms-mirror-repo/$$dist/rpm/..."; \
-		sudo rm -rf qubes-rpms-mirror-repo/$$dist/rpm/*.rpm || true ;\
-		createrepo -q --update qubes-rpms-mirror-repo || true; \
+	@for dist in $(shell ls qubes-packages-mirror-repo/); do \
+		echo "Cleaning up rpms in qubes-packages-mirror-repo/$$dist/rpm/..."; \
+		sudo rm -rf qubes-packages-mirror-repo/$$dist/rpm/*.rpm || true ;\
+		createrepo -q --update qubes-packages-mirror-repo || true; \
 	done
 	@echo 'Cleaning up rpms in $(SRC_DIR)/*/rpm/*/*...'; \
 	sudo rm -fr $(SRC_DIR)/*/rpm/*/*.rpm || true; \
@@ -267,7 +267,7 @@ clean-all:: clean-rpms clean
 	for dir in $${DISTS_ALL[@]%%+*}; do \
 		if ! [ -d chroot-$$dir ]; then continue; fi; \
 		sudo umount chroot-$$dir/proc; \
-		sudo umount chroot-$$dir/tmp/qubes-rpms-mirror-repo; \
+		sudo umount chroot-$$dir/tmp/qubes-packages-mirror-repo; \
 		sudo rm -rf chroot-$$dir || true; \
 	done || true
 	sudo rm -rf $(SRC_DIR) || true
