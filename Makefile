@@ -30,7 +30,7 @@ ifdef GIT_SUBDIR
 endif
 
 # checking for make from Makefile is pointless
-DEPENDENCIES ?= git rpmdevtools rpm-build createrepo #make
+DEPENDENCIES ?= git rpmdevtools rpm-build createrepo PyYAML #make
 # for ./setup
 DEPENDENCIES += python-sh
 
