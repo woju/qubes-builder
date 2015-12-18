@@ -307,12 +307,14 @@ template-local-%::
 			make -s -C $$repo update-repo-template || exit 1
 		fi
 	done
+	LOGFILE=build-logs/template-$$DIST.log
+	mv "$${LOGFILE}" "$${LOGFILE}.old" 2>/dev/null || :
 	if [ "$(VERBOSE)" -eq 0 ]; then
 		echo "-> Building template $$DIST (logfile: build-logs/template-$$DIST.log)..."
-		make -s -C $(SRC_DIR)/linux-template-builder $$MAKE_TARGET > build-logs/template-$$DIST.log 2>&1 || exit 1
+		make -s -C $(SRC_DIR)/linux-template-builder $$MAKE_TARGET > "$${LOGFILE}" 2>&1 || exit 1
 		echo "--> Done."
 	else
-		make -s -C $(SRC_DIR)/linux-template-builder $$MAKE_TARGET || exit 1
+		make -s -C $(SRC_DIR)/linux-template-builder $$MAKE_TARGET 2>&1 | tee "$${LOGFILE}" || exit 1
 	fi
 
 template-in-dispvm: $(addprefix template-in-dispvm-,$(DISTS_VM))
